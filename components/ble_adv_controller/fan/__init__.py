@@ -12,6 +12,7 @@ from .. import (
     ENTITY_BASE_CONFIG_SCHEMA,
     entity_base_code_gen,
     BleAdvEntity,
+    copy_ns
 )
 
 from ..const import (
@@ -21,10 +22,13 @@ from ..const import (
     CONF_BLE_ADV_FORCED_REFRESH_ON_START,
 )
 
+CopyFan = copy_ns.class_("CopyFan", fan.Fan, cg.Component)
+
 BleAdvFan = bleadvcontroller_ns.class_('BleAdvFan', fan.Fan, BleAdvEntity)
 
 CONFIG_SCHEMA = cv.All(
-    fan._FAN_SCHEMA.extend(
+    fan.fan_schema(CopyFan)
+    .extend(
         {
             cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvFan),
             cv.Optional(CONF_BLE_ADV_SPEED_COUNT, default=6): cv.one_of(0,3,6),
