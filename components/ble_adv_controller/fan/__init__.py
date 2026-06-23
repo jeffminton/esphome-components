@@ -12,8 +12,8 @@ from .. import (
     ENTITY_BASE_CONFIG_SCHEMA,
     entity_base_code_gen,
     BleAdvEntity,
-    copy_ns
 )
+
 
 from ..const import (
     CONF_BLE_ADV_SPEED_COUNT,
@@ -22,12 +22,13 @@ from ..const import (
     CONF_BLE_ADV_FORCED_REFRESH_ON_START,
 )
 
-CopyFan = copy_ns.class_("CopyFan", fan.Fan, cg.Component)
+legacy_fan_ns = cg.esphome_ns.namespace("legacy_fan_test")
+LegacyFan = legacy_fan_ns.class_("LegacyFan", fan.Fan, cg.Component)
 
 BleAdvFan = bleadvcontroller_ns.class_('BleAdvFan', fan.Fan, BleAdvEntity)
 
 CONFIG_SCHEMA = cv.All(
-    fan.fan_schema(CopyFan)
+    fan.fan_schema(LegacyFan)
     .extend(
         {
             cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(BleAdvFan),
